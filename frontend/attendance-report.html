@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Attendance Report - EduFaceSync</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Global Colors */
+        :root {
+            --orange: #f68b1f;
+            --dark: #333;
+            --light: #f8f9fa;
+            --yellow: rgb(242, 185, 42);
+            --floating-background: #f4ca8a; /* Slightly darker shade of orange */
+            --background-color: #f68b1f; /* Light background for the whole page */
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: var(--yellow);
+            padding: 15px;
+            position: relative; /* Allow the navbar to span the whole page */
+            z-index: 2; /* Ensure the navbar is above the content */
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .nav-link {
+            color: var(--dark);
+            margin-right: 20px;
+        }
+
+        .nav-link:hover {
+            color: var(--orange);
+        }
+
+        /* Page Styling */
+        body {
+            background-color: var(--background-color); /* Page background color */
+            margin: 0; /* Remove default margin */
+            padding-bottom: 40px; /* Space for footer */
+        }
+
+        /* Floating Report Section */
+        .floating-report {
+            background-color: var(--floating-background); /* Light orange background for the report */
+            padding: 40px; /* Adjusted padding for more space */
+            border-radius: 12px; /* More rounded corners */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+            width: 80%; /* Set width of the report */
+            max-width: 900px; /* Max width for larger screens */
+            position: relative; /* Keep it positioned within the parent */
+            margin: 40px auto; /* Center the report with margin */
+            z-index: 1; /* Ensure it appears above background */
+        }
+
+        /* Table Styling */
+        th, td {
+            text-align: center;
+        }
+
+        /* Centered Heading */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">EduFaceSync</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="teacher-dashboard.html">Back</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="floating-report">
+        <h1>Attendance Report</h1>
+
+        <!-- Filter Options -->
+        <div class="mb-3">
+            <label for="classSelect" class="form-label">Select Class</label>
+            <select class="form-select" id="classSelect">
+                <option value="" selected disabled>Select a class</option>
+                <option value="1">Math 101</option>
+                <option value="2">History 201</option>
+                <option value="3">Science 301</option>
+                <!-- Add more classes as needed -->
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="dateSelect" class="form-label">Select Date</label>
+            <input type="date" class="form-control" id="dateSelect">
+        </div>
+
+        <button class="btn btn-warning" id="viewReportBtn">View Report</button>
+
+        <!-- Attendance Report Table -->
+        <table class="table table-bordered mt-3" id="attendanceTable">
+            <thead>
+                <tr>
+                    <th>Class ID</th>
+                    <th>Class Title</th>
+                    <th>Student Name</th>
+                    <th>Attendance Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Attendance records will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Sample attendance data
+        const attendanceRecords = [
+            { classId: 1, title: 'Math 101', studentName: 'Alice Johnson', status: 'Present', date: '2024-10-01' },
+            { classId: 1, title: 'Math 101', studentName: 'Bob Smith', status: 'Absent', date: '2024-10-01' },
+            { classId: 1, title: 'Math 101', studentName: 'Charlie Brown', status: 'Present', date: '2024-10-01' },
+            { classId: 1, title: 'Math 101', studentName: 'Diana Prince', status: 'Present', date: '2024-10-01' },
+            { classId: 2, title: 'History 201', studentName: 'Eve White', status: 'Present', date: '2024-10-02' },
+            { classId: 2, title: 'History 201', studentName: 'Frank Castle', status: 'Absent', date: '2024-10-02' },
+            { classId: 2, title: 'History 201', studentName: 'Gina Torres', status: 'Present', date: '2024-10-02' },
+            { classId: 3, title: 'Science 301', studentName: 'Henry Adams', status: 'Absent', date: '2024-10-03' },
+            { classId: 3, title: 'Science 301', studentName: 'Ivy Green', status: 'Present', date: '2024-10-03' },
+            { classId: 3, title: 'Science 301', studentName: 'Jack Reacher', status: 'Present', date: '2024-10-03' },
+            { classId: 3, title: 'Science 301', studentName: 'Kathy Lane', status: 'Absent', date: '2024-10-03' }
+        ];
+
+        // Function to render attendance records in the table
+        function renderAttendance(filteredRecords) {
+            const attendanceTableBody = document.querySelector('#attendanceTable tbody');
+            attendanceTableBody.innerHTML = ''; // Clear the table
+
+            filteredRecords.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.classId}</td>
+                    <td>${record.title}</td>
+                    <td>${record.studentName}</td>
+                    <td>${record.status}</td>
+                    <td>${record.date}</td>
+                `;
+                attendanceTableBody.appendChild(row);
+            });
+        }
+
+        // Event listener for viewing report
+        document.getElementById('viewReportBtn').addEventListener('click', () => {
+            const selectedClass = document.getElementById('classSelect').value;
+            const selectedDate = document.getElementById('dateSelect').value;
+
+            // Filter attendance records based on selected class and date
+            const filteredRecords = attendanceRecords.filter(record => 
+                record.classId == selectedClass && record.date === selectedDate
+            );
+
+            renderAttendance(filteredRecords);
+        });
+    </script>
+</body>
+</html>

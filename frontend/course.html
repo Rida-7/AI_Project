@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Courses</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --orange: #f68b1f;
+            --dark: #333;
+            --light: rgba(255, 255, 255, 0.8);
+            --yellow: rgb(242, 185, 42);
+        }
+
+        body {
+            background-color: #ed7d0c;
+        }
+
+        .course-card {
+            background-color: var(--light);
+            border: 1px solid var(--dark);
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .course-card:hover {
+            transform: scale(1.05);
+        }
+
+        .course-title {
+            font-weight: bold;
+        }
+
+        .enroll-button {
+            background-color: var(--yellow);
+            border: none;
+            color: white;
+        }
+
+        .enroll-button:hover {
+            background-color: #ff6700;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg" style="background-color: var(--yellow);">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">EduFaceSync</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="student.html">Back</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Available Courses</h1>
+        <div class="row" id="course-list">
+            <!-- Courses will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Function to fetch available courses
+        async function loadCourses() {
+            try {
+                const response = await fetch('http://localhost:8082/api/courses');  // Fetching available courses from backend
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const courses = await response.json();
+    
+                const courseList = document.getElementById('course-list');
+                courseList.innerHTML = ''; // Clear the course list first
+    
+                courses.forEach(course => {
+                    const courseCard = document.createElement('div');
+                    courseCard.classList.add('col-md-4');
+                    courseCard.innerHTML = `
+                        <div class="course-card p-3">
+                            <h5 class="course-title">${course.course_name}</h5>
+                            <p>Teacher: ${course.teacher_name}</p>
+                            <p>Start Date: ${new Date(course.start_date).toLocaleDateString()}</p>
+                            <p>End Date: ${new Date(course.end_date).toLocaleDateString()}</p>
+                            <button class="btn enroll-button" onclick="enrollInCourse(${course.course_id})">Enroll</button>
+                        </div>
+                    `;
+                    courseList.appendChild(courseCard);
+                });
+            } catch (error) {
+                console.error('Error loading courses:', error);
+                alert('Failed to load courses. Please try again later.');
+            }
+        }
+    
+        // Function to handle course enrollment
+        async function enrollInCourse(courseId) {
+            const token = localStorage.getItem("jwtToken"); // Replace with the actual student ID from session or authentication
+            try {
+                const response = await fetch('http://localhost:8082/api/enroll', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({course_id: courseId })
+                });
+    
+                const result = await response.json();
+                if (result.success) {
+                    alert('Successfully enrolled in the course!');
+                } else {
+                    alert('Enrollment failed. Please try again later.');
+                }
+            } catch (error) {
+                console.error('Error enrolling in course:', error);
+                alert('Enrollment failed. Please try again later.');
+            }
+        }
+    
+        // Load courses on page load
+        window.onload = loadCourses;
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Live Class - EduFaceSync</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Global Colors */
+        :root {
+            --orange: #f68b1f;
+            --dark: #333;
+            --light: #f8f9fa;
+            --yellow: rgb(242, 185, 42);
+            --floating-background: #f4ca8a;
+            /* Slightly darker shade of orange */
+            --background-color: #f68b1f;
+            /* Light background for the whole page */
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: var(--yellow);
+            padding: 15px;
+            position: relative;
+            /* Allow the navbar to span the whole page */
+            z-index: 2;
+            /* Ensure the navbar is above the content */
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .nav-link {
+            color: var(--dark);
+            margin-right: 20px;
+        }
+
+        .nav-link:hover {
+            color: var(--orange);
+        }
+
+        /* Page Styling */
+        body {
+            background-color: var(--background-color);
+            /* Page background color */
+            margin: 0;
+            /* Remove default margin */
+            padding-bottom: 40px;
+            /* Space for footer */
+        }
+
+        /* Floating Form Section */
+        .floating-form {
+            background-color: var(--floating-background);
+            /* Light orange background for the form */
+            padding: 40px;
+            /* Adjusted padding for more space */
+            border-radius: 12px;
+            /* More rounded corners */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            /* Enhanced shadow */
+            width: 80%;
+            /* Set width of the form */
+            max-width: 600px;
+            /* Max width for larger screens */
+            position: relative;
+            /* Keep it positioned within the parent */
+            margin: 40px auto;
+            /* Center the form with margin */
+            z-index: 1;
+            /* Ensure it appears above background */
+        }
+
+        /* Button Customization */
+        .btn-warning {
+            background-color: #eeb929;
+            border: none;
+        }
+
+        .btn-warning:hover {
+            background-color: #ff6700;
+        }
+
+        /* Table Styling */
+        th,
+        td {
+            text-align: center;
+        }
+
+        /* Centered Heading */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">EduFaceSync</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="teacher-dashboard.html">Back</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="floating-form">
+        <h1>Create Live Class</h1>
+        <form id="createMeetingForm">
+            <div class="mb-3">
+                <label for="courseId" class="form-label">Course</label>
+                <select class="form-select" id="courseId" required>
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
+
+            <button type="submit">Create Meeting</button>
+        </form>
+
+        <h3>Meeting Link:</h3>
+        <p id="meetingLink"></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch logged-in teacher's courses
+            fetchCourses();
+        });
+
+        function fetchCourses() {
+            const token = localStorage.getItem("jwtToken")
+            // Assuming you have a backend endpoint that returns courses for the logged-in teacher
+            fetch('http://localhost:8082/api/coursesName', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // Include token in Authorization header
+                }
+            })  // Replace with your API endpoint
+                .then(response => response.json())
+                .then(data => {
+                    // Assuming the response is an array of courses
+                    const courseSelect = document.getElementById('courseId');
+                    data.courses.forEach(course => {
+                        const option = document.createElement('option');
+                        option.value = course.course_id;
+                        option.textContent = course.course_name;
+                        courseSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching courses:', error);
+                });
+        }
+
+        const createMeetingForm = document.getElementById('createMeetingForm');
+
+        createMeetingForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+           // const teacherName = document.getElementById('teacherName').value;
+            const className = document.getElementById('courseId').value;
+
+            const meetingData = {
+                className
+            };
+
+            try {
+                const response = await fetch('http://localhost:8082/create-meeting', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(meetingData)
+                });
+
+                const data = await response.json();
+                document.getElementById('meetingLink').innerHTML = `Meeting Link: <a href="${data.meetingLink}" target="_blank">${data.meetingLink}</a>`;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+
+</html>

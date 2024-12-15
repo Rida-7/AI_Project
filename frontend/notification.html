@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Notifications</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Global Colors */
+        :root {
+            --orange: #FF6B3D; /* Dark Orange */
+            --dark: #333;
+            --light: rgba(239, 226, 226, 0.8);
+            --yellow: #FFCA73; /* Yellow from previous theme */
+            --red-alert: rgba(206, 21, 21, 0.801); /* Red for alerts */
+        }
+
+        body {
+            background-color: var(--orange); /* Dark orange background */
+            color: var(--dark); /* Default text color */
+        }
+
+        .notification-card {
+            background-color: var(--light);
+            border: 1px solid var(--dark);
+            border-radius: 8px;
+            margin: 10px 0;
+            padding: 15px;
+            overflow: hidden;
+            transition: background-color 0.3s;
+        }
+
+        .notification-card.attendance-alert {
+            background-color: var(--red-alert); /* Red background for alerts */
+            color: white;
+        }
+
+        .notification-title {
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .notification-date {
+            font-size: 0.9em;
+            color: rgb(11, 6, 63);
+        }
+
+        .notification-text {
+            color: var(--dark);
+        }
+
+        .mark-read-btn {
+            background-color: var(--yellow); /* Yellow button */
+            color: var(--dark);
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .mark-read-btn:hover {
+            background-color: var(--dark); /* Dark hover for button */
+            color: white;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--yellow); /* Yellow navbar */
+        }
+
+        .navbar-brand {
+            color: var(--dark);
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: var(--dark);
+        }
+
+        .nav-link:hover {
+            color: var(--orange);
+        }
+
+        h1 {
+            color: white;
+        }
+
+        /* Mark Read State */
+        .notification-card.read {
+            background-color: var(--yellow); /* Marked as read */
+            color: var(--dark);
+        }
+
+        .notification-card.read .mark-read-btn {
+            background-color: var(--dark); /* Disabled button */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">EduFaceSync</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="student.html">Back</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Notifications</h1>
+        <div class="row">
+            <!-- Attendance Shortage Notification -->
+            <div class="col-md-6">
+                <div class="notification-card attendance-alert">
+                    <h5 class="notification-title">Attendance Shortage Alert: Linear Algebra</h5>
+                    <p class="notification-date">Date: October 22, 2024</p>
+                    <p class="notification-text">Your attendance for Linear Algebra is below 75%. Please ensure to attend upcoming classes to meet the required attendance.</p>
+                    <button class="mark-read-btn" onclick="markAsRead(this)">Mark as Read</button>
+                </div>
+            </div>
+            <!-- Join Class Reminder -->
+            <div class="col-md-6">
+                <div class="notification-card">
+                    <h5 class="notification-title">Reminder to Join: Programming Fundamentals</h5>
+                    <p class="notification-date">Date: October 21, 2024</p>
+                    <p class="notification-text">The next Programming Fundamentals class will start tomorrow at 9:00 AM. Ensure to join on time to maintain your attendance.</p>
+                    <button class="mark-read-btn" onclick="markAsRead(this)">Mark as Read</button>
+                </div>
+            </div>
+            <!-- Attendance Shortage for OOP -->
+            <div class="col-md-6">
+                <div class="notification-card attendance-alert">
+                    <h5 class="notification-title">Attendance Shortage Alert: Object-Oriented Programming</h5>
+                    <p class="notification-date">Date: October 20, 2024</p>
+                    <p class="notification-text">You are at risk of failing OOP due to low attendance. Make sure to attend all upcoming sessions to improve your attendance record.</p>
+                    <button class="mark-read-btn" onclick="markAsRead(this)">Mark as Read</button>
+                </div>
+            </div>
+            <!-- General Reminder for Upcoming Classes -->
+            <div class="col-md-6">
+                <div class="notification-card">
+                    <h5 class="notification-title">Upcoming Class: Database Systems</h5>
+                    <p class="notification-date">Date: October 18, 2024</p>
+                    <p class="notification-text">A Database Systems class is scheduled for Monday at 11:00 AM. Join on time to avoid attendance shortages.</p>
+                    <button class="mark-read-btn" onclick="markAsRead(this)">Mark as Read</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function markAsRead(button) {
+            const card = button.closest('.notification-card');
+            card.classList.remove('attendance-alert');
+            card.classList.add('read');
+            button.disabled = true;
+            button.textContent = "Read";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduFaceSync Student Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Global Colors */
+        :root {
+            --orange: #f68b1f;
+            --dark: #333;
+            --light: #f8f9fa;
+            --yellow: rgb(242, 185, 42);
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: var(--yellow);
+            padding: 15px;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .nav-link {
+            color: var(--dark);
+            margin-right: 20px;
+        }
+
+        .nav-link:hover {
+            color: var(--orange);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(45deg, var(--orange), #ff6700);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero-text {
+            color: white;
+            animation: fade-in 1s ease-out;
+        }
+
+        .hero-text h1 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+        }
+
+        .hero-text p {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+        }
+
+        .btn-warning {
+            background-color: #eeb929;
+            border: none;
+            font-weight: bold;
+            color: white;
+            margin-top: 20px;
+            animation: fade-in 1.5s ease-out;
+        }
+
+        .btn-warning:hover {
+            background-color: #ff6700;
+        }
+
+        /* Button Container */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        /* Image Styling */
+        .hero-img {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            max-width: 300px; /* Adjust as needed */
+        }
+
+        /* Animations */
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">EduFaceSync</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="userInterface.html">Log out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-text">
+            <h1>Welcome to EduFaceSync</h1>
+            <p>Your AI-Powered Student Dashboard Awaits</p>
+            <div class="button-container">
+                <a href="course.html" class="btn btn-warning btn-lg">View Courses</a>
+                <a href="liveclass.html" class="btn btn-warning btn-lg">Join Live Class</a>
+                <a href="attendence.html" class="btn btn-warning btn-lg">View Attendance</a>
+                <!-- <a href="notification.html" class="btn btn-warning btn-lg">Check Notifications</a>
+                <a href="feedback.html" class="btn btn-warning btn-lg">Provide Feedback</a>
+                 -->
+            </div>
+        </div>
+        <div class="hero-img">
+            <img src="student-removebg-preview.png" alt="Student Dashboard Image" class="img-fluid"> <!-- Replace with your image path -->
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

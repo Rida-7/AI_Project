@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Courses - EduFaceSync</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Global Colors */
+        :root {
+            --orange: #f68b1f;
+            --dark: #333;
+            --light: #f8f9fa;
+            --yellow: rgb(242, 185, 42);
+            --floating-background: #f4ca8a;
+            /* Slightly darker shade of orange */
+            --background-color: #f68b1f;
+            /* Light background for the whole page */
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: var(--yellow);
+            padding: 15px;
+            position: relative;
+            /* Allow the navbar to span the whole page */
+            z-index: 2;
+            /* Ensure the navbar is above the content */
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .nav-link {
+            color: var(--dark);
+            margin-right: 20px;
+        }
+
+        .nav-link:hover {
+            color: var(--orange);
+        }
+
+        /* Page Styling */
+        body {
+            background-color: var(--background-color);
+            /* Page background color */
+            margin: 0;
+            /* Remove default margin */
+            padding-bottom: 40px;
+            /* Space for footer */
+        }
+
+        /* Floating Form Section */
+        .floating-form {
+            background-color: var(--floating-background);
+            /* Light orange background for the form */
+            padding: 40px;
+            /* Adjusted padding for more space */
+            border-radius: 12px;
+            /* More rounded corners */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            /* Enhanced shadow */
+            width: 80%;
+            /* Set width of the form */
+            max-width: 600px;
+            /* Max width for larger screens */
+            position: relative;
+            /* Keep it positioned within the parent */
+            margin: 40px auto;
+            /* Center the form with margin */
+            z-index: 1;
+            /* Ensure it appears above background */
+        }
+
+        /* Button Customization */
+        .btn-warning {
+            background-color: #eeb929;
+            border: none;
+        }
+
+        .btn-warning:hover {
+            background-color: #ff6700;
+        }
+
+        /* Table Styling */
+        th,
+        td {
+            text-align: center;
+        }
+
+        /* Centered Heading */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">EduFaceSync</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="teacher-dashboard.html">Back</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="floating-form">
+        <h1>Manage Courses</h1>
+
+        <!-- Add Course Form -->
+        <form id="addCourseForm">
+            <div class="mb-3">
+                <label for="courseTitle" class="form-label">Course Title</label>
+                <input type="text" class="form-control" id="courseTitle" required>
+            </div>
+            <div class="mb-3">
+                <label for="courseDescription" class="form-label">Course Description</label>
+                <textarea class="form-control" id="courseDescription" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="startDate" required>
+            </div>
+            <div class="mb-3">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" class="form-control" id="endDate" required>
+            </div>
+            <button type="submit" class="btn btn-warning">Add Course</button>
+        </form>
+
+        <!-- Courses Table -->
+        <h2 class="mt-4">Existing Courses</h2>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="coursesTable">
+                <!-- Course rows will be populated here -->
+            </tbody>
+        </table>
+        <!-- Edit Course Modal -->
+        <div id="editCourseModal" style="display: none;">
+            <form id="editCourseForm">
+                <input type="hidden" id="editCourseId"> <!-- Hidden field for course ID -->
+                <div class="mb-3">
+                    <label for="editCourseTitle" class="form-label">Course Title</label>
+                    <input type="text" class="form-control" id="editCourseTitle" required>
+                </div>
+                <div class="mb-3">
+                    <label for="editCourseDescription" class="form-label">Course Description</label>
+                    <textarea class="form-control" id="editCourseDescription" rows="3" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="editStartDate" class="form-label">Start Date</label>
+                    <input type="date" class="form-control" id="editStartDate" required>
+                </div>
+                <div class="mb-3">
+                    <label for="editEndDate" class="form-label">End Date</label>
+                    <input type="date" class="form-control" id="editEndDate" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="button" class="btn btn-secondary"
+                    onclick="document.getElementById('editCourseModal').style.display = 'none';">Cancel</button>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // JavaScript to handle form submission and populate table
+        const coursesTable = document.getElementById('coursesTable');
+        const addCourseForm = document.getElementById('addCourseForm');
+
+
+
+        // Function to render courses in the table
+        function renderCourses() {
+            coursesTable.innerHTML = ''; // Clear the table
+            courses.forEach(course => {
+                
+                const startDate = new Date(course.start_date).toLocaleDateString(); // Format start date
+                const endDate = new Date(course.end_date).toLocaleDateString();     // Format end date
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${course.id}</td>
+                    <td>${course.course_name}</td>
+                    <td>${course.description}</td>
+                    <td>${startDate}</td>
+                    <td>${endDate}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="editCourse(${course.id})">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteCourse(${course.id})">Delete</button>
+                    </td>
+                `;
+                coursesTable.appendChild(row);
+            });
+        }
+
+        // Function to fetch and render courses
+        function fetchCourses() {
+            fetch('http://localhost:8082/courses', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('jwtToken')}` // Include JWT token in header
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error fetching courses:', data.error);
+                        return;
+                    }
+
+                    // Store the courses in a global variable
+                    courses = data;
+
+                    // Call the function to render courses in the table
+                    renderCourses();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // Call the fetchCourses function when the page loads to populate the table
+        document.addEventListener('DOMContentLoaded', fetchCourses);
+
+
+        // Frontend JavaScript to send course data with JWT token in Authorization header
+        document.getElementById('addCourseForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent form submission
+
+            // Get form data
+            const title = document.getElementById('courseTitle').value;
+            const description = document.getElementById('courseDescription').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            // Prepare the data to be sent in the request body
+            const courseData = {
+                title: title,
+                description: description,
+                startDate: startDate,
+                endDate: endDate
+            };
+
+            // Get the token from localStorage (or wherever it's stored)
+            const token = localStorage.getItem('jwtToken'); // Assuming JWT is stored in localStorage
+            console.log("retreived token", token);
+
+            // Send POST request to the server with token in the Authorization header
+            fetch('http://localhost:8082/addCourse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // Include token in Authorization header
+                },
+                body: JSON.stringify(courseData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);  // Log success message
+                    if (data.message === 'Course added successfully') {
+                        alert('Course added successfully!');
+                        // Optionally, reset the form or refresh the list of courses
+                        document.getElementById('addCourseForm').reset();
+                        fetchCourses();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error adding course');
+                });
+        });
+
+
+        function editCourse(courseId) {
+            // Fetch the specific course details to populate the edit form
+            fetch(`http://localhost:8082/getCourse/${courseId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('jwtToken')}` // Include JWT token
+                }
+            })
+                .then(response => response.json())
+                .then(course => {
+                    // Populate the edit form fields with the course data
+                    document.getElementById('editCourseId').value = courseId;
+                    document.getElementById('editCourseTitle').value = course.course_name;
+                    document.getElementById('editCourseDescription').value = course.description;
+                    document.getElementById('editStartDate').value = new Date(course.start_date).toISOString().split('T')[0];
+                    document.getElementById('editEndDate').value = new Date(course.end_date).toISOString().split('T')[0];
+
+                    // Show the modal or form for editing
+                    document.getElementById('editCourseModal').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error fetching course details:', error);
+                    alert('Failed to fetch course details.');
+                });
+        }
+
+        // Function to handle saving the updated course
+        document.getElementById('editCourseForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get updated course data from the form
+            const courseId = document.getElementById('editCourseId').value;
+            const updatedCourseData = {
+                course_name: document.getElementById('editCourseTitle').value,
+                description: document.getElementById('editCourseDescription').value,
+                start_date: document.getElementById('editStartDate').value,
+                end_date: document.getElementById('editEndDate').value
+            };
+
+            // Send updated course data to the server
+            fetch(`http://localhost:8082/updateCourse/${courseId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('jwtToken')}` // Include JWT token
+                },
+                body: JSON.stringify(updatedCourseData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Course updated successfully') {
+                        alert('Course updated successfully!');
+                        document.getElementById('editCourseModal').style.display = 'none'; // Close the modal
+                        fetchCourses(); // Reload the courses list
+                    } else {
+                        alert('Failed to update course.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating course:', error);
+                    alert('Error updating course.');
+                });
+        });
+
+
+        function deleteCourse(courseId) {
+    if (confirm("Are you sure you want to delete this course?")) {
+        // Get the token from localStorage (or wherever it's stored)
+        const token = localStorage.getItem('jwtToken');
+
+        // Send DELETE request to the API
+        fetch(`http://localhost:8082/deleteCourses/${courseId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}` // Include the JWT token
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Course deleted successfully') {
+                    alert('Course deleted successfully!');
+                    // Remove the course from the UI or refresh the list
+                    fetchCourses(); // Function to reload the list of courses
+                } else {
+                    alert('Failed to delete course: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error deleting course');
+            });
+    }
+}
+
+    </script>
+</body>
+
+</html>

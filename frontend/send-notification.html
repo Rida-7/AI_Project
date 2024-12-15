@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Notification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Global Colors */
+        :root {
+            --orange: #e6732c;
+            --light-orange: #e6bd95;
+            --dark: #333;
+            --light: #f8f9fa;
+            --yellow: rgb(242, 185, 42);
+            --bg-color: #f68b1f; /* Change this to your desired background color */
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: var(--yellow);
+            padding: 15px;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .nav-link {
+            color: var(--dark);
+            margin-right: 20px;
+        }
+
+        .nav-link:hover {
+            color: var(--orange);
+        }
+
+        /* Main Section Styling */
+        .main-section {
+            background-color: var(--light-orange);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body style="background-color: var(--bg-color);">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">EduFaceSync</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="teacher-dashboard.html">Back</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Section -->
+    <div class="main-section">
+        <h2>Send Notification</h2>
+        
+        <div class="mb-3">
+            <label for="notificationTitle" class="form-label">Notification Title</label>
+            <input type="text" id="notificationTitle" class="form-control" placeholder="Enter notification title">
+        </div>
+
+        <div class="mb-3">
+            <label for="notificationMessage" class="form-label">Notification Message</label>
+            <textarea id="notificationMessage" class="form-control" rows="4" placeholder="Enter your message here"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="studentSelect" class="form-label">Select Students</label>
+            <select id="studentSelect" class="form-select" multiple>
+                <option value="Student A">Student A</option>
+                <option value="Student B">Student B</option>
+                <option value="Student C">Student C</option>
+                <option value="Student D">Student D</option>
+            </select>
+            <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</small>
+        </div>
+
+        <button id="sendNotificationBtn" class="btn btn-warning">Send Notification</button>
+        <button id="resetBtn" class="btn btn-secondary ms-2">Reset</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('sendNotificationBtn').addEventListener('click', () => {
+            const title = document.getElementById('notificationTitle').value;
+            const message = document.getElementById('notificationMessage').value;
+            const selectedStudents = Array.from(document.getElementById('studentSelect').selectedOptions).map(option => option.value);
+
+            if (title && message && selectedStudents.length) {
+                // Simulate sending notification (replace this with actual sending logic)
+                alert(`Notification Sent!\nTitle: ${title}\nMessage: ${message}\nTo: ${selectedStudents.join(', ')}`);
+                // Clear the form
+                document.getElementById('notificationTitle').value = '';
+                document.getElementById('notificationMessage').value = '';
+                document.getElementById('studentSelect').selectedIndex = -1; // Deselect all
+            } else {
+                alert('Please fill in all fields and select at least one student.');
+            }
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            document.getElementById('notificationTitle').value = '';
+            document.getElementById('notificationMessage').value = '';
+            document.getElementById('studentSelect').selectedIndex = -1; // Deselect all
+        });
+    </script>
+</body>
+</html>

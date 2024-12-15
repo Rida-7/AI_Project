@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features - AI Facial Expression Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Global Colors */
+        :root {
+            --dark-orange: #e67e22;
+            --coral-gray: #34495e;
+            --yellow-bg: #ec981a;
+            --dark-navy: #34495e;
+            --coral: #ff6b61;
+        }
+
+        /* Page Background */
+        body {
+            background-color: var(--dark-orange);
+            color: var(--dark-navy);
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: rgb(242, 185, 42);
+            padding: 15px;
+        }
+
+        .navbar-brand, .nav-link {
+            color: white;
+        }
+
+        .nav-link:hover {
+            color: var(--coral);
+        }
+
+        /* Section Styling */
+        .features-container {
+            padding: 50px 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            margin-top: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-title {
+            font-size: 2.8rem;
+            color: var(--dark-navy);
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var(--dark-orange);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-body {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Icons in Cards */
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--coral);
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .card-text {
+            font-size: 1rem;
+            color: white;
+            line-height: 1.2;
+        }
+
+        /* System Vision Card */
+        .system-vision-card {
+            background-color: var(--dark-orange);
+            color: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .system-vision-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .vision-icon {
+            font-size: 3rem;
+            color: var(--coral);
+            margin-right: 15px;
+        }
+
+        .vision-text {
+            font-size: 1.2rem;
+            text-align: justify; /* Justified alignment */
+        }
+
+        /* Responsive Layout for Cards */
+        @media (min-width: 768px) {
+            .row {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">EduFaceSync</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="userInterface.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Sign up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Features Section -->
+    <section class="features-container">
+        <h1 class="feature-title">AI-Based Facial Expression Detection Features</h1>
+        
+        <div class="container">
+            <div class="row">
+                <!-- Existing Cards -->
+                <!-- Card 1 -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="card-icon">😊</div>
+                            <h5 class="card-title">Real-time Emotion Detection</h5>
+                            <p class="card-text">Captures facial expressions in real-time and provides instant feedback on emotions, enhancing online engagement.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="card-icon">📊</div>
+                            <h5 class="card-title">Emotional Analysis Report</h5>
+                            <p class="card-text">Post-class emotional analysis reports offer insights to improve teaching based on student engagement levels.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="card-icon">🎯</div>
+                            <h5 class="card-title">Personalized Learning Recommendations</h5>
+                            <p class="card-text">AI provides personalized learning recommendations based on emotional feedback for better content delivery.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Additional Cards -->
+                <!-- Card 4 -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="card-icon">📋</div>
+                            <h5 class="card-title">Teacher & Student Dashboards</h5>
+                            <p class="card-text">Teachers can monitor student performance while students view their emotional trends and insights.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 5 -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="card-icon">🔐</div>
+                            <h5 class="card-title">Facial Expression Data Security</h5>
+                            <p class="card-text">Data security is a top priority, ensuring compliance with privacy regulations and secure storage.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 6 -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="card-icon">🔄</div>
+                            <h5 class="card-title">Seamless Integration</h5>
+                            <p class="card-text">Easily integrates into existing Learning Management Systems (LMS) for a smooth experience.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Vision Card -->
+            <div class="system-vision-card">
+                <div class="vision-icon">🌍</div>
+                <div class="vision-text">
+                    <h5 class="card-title">System Vision</h5>
+                    <p class="card-text">Our vision is to create a responsive learning environment that adapts to each student’s unique emotional profile, enhancing engagement and making learning truly personalized.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
